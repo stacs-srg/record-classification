@@ -18,6 +18,7 @@ package uk.ac.standrews.cs.digitising_scotland.record_classification.experiments
 
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.ac.standrews.cs.digitising_scotland.record_classification.analysis.AbstractMetricsTest;
 import uk.ac.standrews.cs.digitising_scotland.record_classification.analysis.ConfusionMatrix;
@@ -42,6 +43,7 @@ import java.util.function.Supplier;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public abstract class AbstractClassificationProcessTest extends AbstractMetricsTest {
 
     public static final String CODED_DATA_1K_FILE_NAME = "coded_data_1K.csv";

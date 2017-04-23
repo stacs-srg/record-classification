@@ -17,6 +17,7 @@
 package uk.ac.standrews.cs.digitising_scotland.record_classification.cli.command;
 
 import org.apache.commons.csv.CSVFormat;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -45,6 +46,7 @@ import static uk.ac.standrews.cs.digitising_scotland.record_classification.datas
  * @author Masih Hajiarab Derkani
  */
 @RunWith(Parameterized.class)
+@Ignore
 public class ClassifyCommandTest extends CommandTest {
 
     public static final List<ClassifierSupplier> CLASSIFIERS = Arrays.asList(ClassifierSupplier.EXACT_MATCH, ClassifierSupplier.STRING_SIMILARITY_JARO_WINKLER, ClassifierSupplier.OLR, ClassifierSupplier.NAIVE_BAYES, ClassifierSupplier.VOTING_ENSEMBLE_EXACT_ML_SIMILARITY);
