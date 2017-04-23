@@ -1,3 +1,21 @@
+<!--
+
+    Copyright 2012-2017 Systems Research Group, University of St Andrews:
+    <https://github.com/stacs-srg>
+
+    This file is part of the module record-classification.
+
+    record-classification is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+    License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+    version.
+
+    record-classification is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with record-classification. If not, see
+    <http://www.gnu.org/licenses/>.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -5,442 +23,135 @@
     <parent>
         <groupId>uk.ac.standrews.cs</groupId>
         <artifactId>common-pom</artifactId>
-        <version>2.0-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>digitising_scotland</artifactId>
+    <artifactId>record-classification</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>digitising_scotland</name>
+    <packaging>jar</packaging>
+    <name>record-classification</name>
+
     <description>Software produced by the Digitising Scotland project.</description>
     <url>http://digitisingscotland.cs.st-andrews.ac.uk/</url>
     <inceptionYear>2012</inceptionYear>
 
-    <properties>
-        <jdk.version>1.8</jdk.version>
-        <maven.compiler.source>${jdk.version}</maven.compiler.source>
-        <maven.compiler.target>${jdk.version}</maven.compiler.target>
-        <repository.type>hg</repository.type>
-        <repository.location>http://quicksilver.hg.cs.st-andrews.ac.uk/digitising_scotland</repository.location>
-        <checkstyle.config>
-            http://quicksilver.hg.cs.st-andrews.ac.uk/digitising_scotland/raw-file/tip/config/checkstyle-config.xml
-        </checkstyle.config>
-        <teamlist.showAvatarImages>false</teamlist.showAvatarImages>
-    </properties>
-
-    <modules>
-        <module>linkage</module>
-        <module>population_model</module>
-        <module>util</module>
-        <module>record_classification</module>
-    </modules>
-
     <dependencies>
 
         <dependency>
-            <!-- CSV manipulation utility classes -->
             <groupId>uk.ac.standrews.cs</groupId>
             <artifactId>ciesvium</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.ac.standrews.cs</groupId>
+            <artifactId>classification_schemes</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-suggest</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.mahout</groupId>
+            <artifactId>mahout-core</artifactId>
+            <version>0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.la4j</groupId>
+            <artifactId>la4j</artifactId>
+            <version>0.5.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.mpkorstanje</groupId>
+            <artifactId>simmetrics-core</artifactId>
+            <version>3.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.5.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.48</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>weka-dev</artifactId>
+            <version>3.7.12</version>
         </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-            </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
+                <!-- This checks that the required licence, specified in the licence template        -->
+                <!-- file src/main/resources/license-template.txt, is applied to all source files.   -->
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>3.0</version>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-            </plugin>
-
         </plugins>
-
-        <pluginManagement>
-            <!-- Captures common configuration for build plugins in modules -->
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.4</version>
-                    <dependencies>
-
-                        <dependency>
-                            <groupId>lt.velykis.maven.skins</groupId>
-                            <artifactId>reflow-velocity-tools</artifactId>
-                            <version>1.1.1</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.apache.velocity</groupId>
-                            <artifactId>velocity</artifactId>
-                            <version>1.7</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <generateReports>true</generateReports>
-                        <inputEncoding>UTF-8</inputEncoding>
-                        <outputEncoding>UTF-8</outputEncoding>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <configuration>
-                        <additionalparam>-Xdoclint:none</additionalparam>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <!-- This plugin checks that the required licence (currently GPL3, specified in the licence
-                         template file, is applied to all source files. The build will fail if any such files
-                         do not contain the licence. -->
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin</artifactId>
-                    <version>2.11</version>
-                    <configuration>
-                        <header>src/main/resources/license-template.txt</header>
-                        <headerDefinitions>
-                            <!-- This custom style is used to override the default formatting for Java files,
-                                 which uses Javadoc format, therefore causing confusion with the actual class-level
-                                 Javadoc. -->
-                            <headerDefinition>src/main/resources/license-custom-style.xml</headerDefinition>
-                        </headerDefinitions>
-                        <mapping>
-                            <java>JAVA_STYLE</java>
-                        </mapping>
-                        <includes>
-                            <include>src/**</include>
-                            <include>pom.xml</include>
-                        </includes>
-                        <excludes>
-                            <exclude>**/README</exclude>
-                            <exclude>src/test/resources/**</exclude>
-                            <exclude>src/main/resources/**</exclude>
-                            <exclude>src/docs/**</exclude>
-                            <exclude>src/site/**</exclude>
-                        </excludes>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.4</version>
-                    <configuration>
-                        <archive>
-                            <manifest>
-                                <addClasspath>true</addClasspath>
-                            </manifest>
-                        </archive>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.4</version>
-                    <configuration>
-                        <archive>
-                            <manifest>
-                                <addClasspath>true</addClasspath>
-                            </manifest>
-                        </archive>
-                        <descriptorRefs>
-                            <descriptorRef>jar-with-dependencies</descriptorRef>
-                        </descriptorRefs>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>make-assembly</id>
-                            <!-- this is used for inheritance merges -->
-                            <phase>package</phase>
-                            <!-- bind to the packaging phase -->
-                            <goals>
-                                <goal>single</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.3</version>
-                </plugin>
-
-            </plugins>
-
-        </pluginManagement>
-
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh-external</artifactId>
-                <version>2.10</version>
-            </extension>
-        </extensions>
     </build>
 
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.7</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>modules</report>
-                            <report>license</report>
-                            <report>project-team</report>
-                            <report>scm</report>
-                            <report>cim</report>
-                            <report>dependency-management</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
-
-    <distributionManagement>
-        <site>
-            <id>digitisingscotland.cs</id>
-            <url>scpexe://digitisingscotland@digitisingscotland.host.cs.st-andrews.ac.uk/cs/home/digitisingscotland/public_html_digitisingscotland/</url>
-        </site>
-    </distributionManagement>
-
     <repositories>
+
+        <!-- Repository to which this module is deployed, and others retrieved from.                 -->
+        <!-- This has to be replicated from the parent POM so the parent POM can be found.           -->
         <repository>
             <id>uk.ac.standrews.cs.maven.repository</id>
             <name>School of Computer Science Maven Repository</name>
             <url>http://maven.cs.st-andrews.ac.uk/</url>
         </repository>
+
     </repositories>
-
-    <licenses>
-        <license>
-            <name>GNU General Public License 3.0</name>
-            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <scm>
-        <connection>scm:hg:http://quicksilver.hg.cs.st-andrews.ac.uk/digitising_scotland/</connection>
-        <developerConnection>scm:hg:ssh://quicksilver@quicksilver.host.cs.st-andrews.ac.uk/hg/digitising_scotland/
-        </developerConnection>
-        <url>http://quicksilver.hg.cs.st-andrews.ac.uk/digitising_scotland/</url>
-    </scm>
-
-    <ciManagement>
-        <system>Jenkins</system>
-        <url>https://builds.cs.st-andrews.ac.uk/job/digitising_scotland/</url>
-    </ciManagement>
-
-    <developers>
-        <developer>
-            <id/>
-            <name>Alan Dearle</name>
-            <email>alan.dearle@st-andrews.ac.uk</email>
-            <url>https://al.host.cs.st-andrews.ac.uk/</url>
-            <organization>University of St Andrews</organization>
-            <organizationUrl>http://www.st-andrews.ac.uk/</organizationUrl>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id/>
-            <name>Graham Kirby</name>
-            <email>graham.kirby@st-andrews.ac.uk</email>
-            <url>https://graham.host.cs.st-andrews.ac.uk/</url>
-            <organization>University of St Andrews</organization>
-            <organizationUrl>http://www.st-andrews.ac.uk/</organizationUrl>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id/>
-            <name>Özgür Akgün</name>
-            <email>ozgur.akgun@st-andrews.ac.uk</email>
-            <url>https://ozgur.host.cs.st-andrews.ac.uk/</url>
-            <organization>University of St Andrews</organization>
-            <organizationUrl>http://www.st-andrews.ac.uk/</organizationUrl>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id/>
-            <name>Tom Dalton</name>
-            <email>tsd4@st-andrews.ac.uk</email>
-            <organization>University of St Andrews</organization>
-            <organizationUrl>http://www.st-andrews.ac.uk/</organizationUrl>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
-    </developers>
-    <contributors>
-        <contributor>
-            <name>Masih Hajiarab Derkani</name>
-            <organization>Previously University of St Andrews</organization>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Jamie Carson</name>
-            <email>jamiekcarson@gmail.com</email>
-            <organization>Previously University of St Andrews</organization>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Fraser Dunlop</name>
-            <email>fraser.dunlop@gmail.com</email>
-            <organization>Previously University of St Andrews</organization>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Chris Dibben</name>
-            <email>chris.dibben@ed.ac.uk</email>
-            <url>http://www.ed.ac.uk/schools-departments/geosciences/people?indv=3666</url>
-            <organization>University of Edinburgh</organization>
-            <organizationUrl>http://www.ed.ac.uk/</organizationUrl>
-            <roles>
-                <role>Collaborator</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Lee Williamson</name>
-            <email>lee.williamson@ed.ac.uk</email>
-            <url>http://www.ed.ac.uk/schools-departments/geosciences/people?indv=3966</url>
-            <organization>University of Edinburgh</organization>
-            <organizationUrl>http://www.ed.ac.uk/</organizationUrl>
-            <roles>
-                <role>Collaborator</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Alasdair Gray</name>
-            <email>A.J.G.Gray@hw.ac.uk</email>
-            <url>http://www.macs.hw.ac.uk/~ajg33/</url>
-            <organization>Heriot-Watt University</organization>
-            <organizationUrl>http://www.hw.ac.uk/</organizationUrl>
-            <roles>
-                <role>Collaborator</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Peter Christen</name>
-            <email>peter.christen@anu.edu.au</email>
-            <url>http://cs.anu.edu.au/~Peter.Christen/</url>
-            <organization>Australian National University</organization>
-            <organizationUrl>http://www.anu.edu.au/</organizationUrl>
-            <roles>
-                <role>Collaborator</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>John Bass</name>
-            <organization>Institute for Marine and Antarctic Studies</organization>
-            <organizationUrl>http://www.imas.utas.edu.au</organizationUrl>
-            <roles>
-                <role>Collaborator</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Eilidh Garrett</name>
-            <email>eilidh.garrett@btinternet.com</email>
-            <url>http://www.geog.cam.ac.uk/people/garrett/</url>
-            <organization>University of Cambridge</organization>
-            <organizationUrl>http://www.cam.ac.uk/</organizationUrl>
-            <roles>
-                <role>Collaborator</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Alice Reid</name>
-            <email>alice.reid@geog.cam.ac.uk</email>
-            <url>http://www.geog.cam.ac.uk/people/reid/</url>
-            <organization>University of Cambridge</organization>
-            <organizationUrl>http://www.cam.ac.uk/</organizationUrl>
-            <roles>
-                <role>Collaborator</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Victor Andrei</name>
-            <email>va9@st-andrews.ac.uk</email>
-            <organization>University of St Andrews</organization>
-            <organizationUrl>http://www.st-andrews.ac.uk/</organizationUrl>
-            <roles>
-                <role>Student Intern 2014</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Conrad de Kerckhove</name>
-            <url>https://www.linkedin.com/in/cfedk</url>
-            <organization>University of St Andrews</organization>
-            <organizationUrl>http://www.st-andrews.ac.uk/</organizationUrl>
-            <roles>
-                <role>Student Intern 2013</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Ilia Shumailov</name>
-            <url>https://www.linkedin.com/pub/ilia-shumailov/93/297/781</url>
-            <organization>University of St Andrews</organization>
-            <organizationUrl>http://www.st-andrews.ac.uk/</organizationUrl>
-            <roles>
-                <role>Student Intern 2013</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Ben Lovell</name>
-            <url>https://uk.linkedin.com/pub/ben-lovell/22/5a2/b76</url>
-            <organization>Previously University of St Andrews</organization>
-            <roles>
-                <role>Student Intern 2012</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Ivars Zubkans</name>
-            <url>https://lv.linkedin.com/pub/ivars-zubkans/32/750/19</url>
-            <organization>Previously University of St Andrews</organization>
-            <roles>
-                <role>Student Intern 2012</role>
-            </roles>
-        </contributor>
-    </contributors>
 
 </project>  
