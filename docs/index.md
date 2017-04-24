@@ -7,12 +7,6 @@ title: record-classification
 
 This module provides an automatic classification tool.
 
-### Documentation
-
-The Java API documentation can be found here:
-
-https://quicksilver.host.cs.st-andrews.ac.uk/apidocs/record-classification/
-
 ### Build status
 
 [![CircleCI](https://circleci.com/gh/stacs-srg/record-classification.svg?style=svg)](https://circleci.com/gh/stacs-srg/record-classification)
@@ -30,9 +24,17 @@ The CLI offers an easy-to-use interface to load, clean and classify records, as 
 
 #### Java API
 
+The Java API documentation can be found here:
+
+```
+[https://quicksilver.host.cs.st-andrews.ac.uk/apidocs/record-classification/](https://quicksilver.host.cs.st-andrews.ac.uk/apidocs/record-classification/)
+```
+
 The Java Jar files containing the latest build of the software can be downloaded from here:
 
+```
 https://quicksilver.host.cs.st-andrews.ac.uk/artifacts/record-classification/
+```
 
 See also [Maven details](https://github.com/stacs-srg/record-classification/blob/master/README.md).
 
