@@ -26,9 +26,7 @@ The CLI offers an easy-to-use interface to load, clean and classify records, as 
 
 The Java API documentation can be found here:
 
-```
 [https://quicksilver.host.cs.st-andrews.ac.uk/apidocs/record-classification/](https://quicksilver.host.cs.st-andrews.ac.uk/apidocs/record-classification/)
-```
 
 The Java Jar files containing the latest build of the software can be downloaded from here:
 
