@@ -1,3 +1,0 @@
-To deploy built site, in absence of deployment working correctly from build server:
-
-scp -r target/site/* digitisingscotland@digitisingscotland.host.cs.st-andrews.ac.uk:/cs/home/digitisingscotland/public_html_digitisingscotland/record_classification
