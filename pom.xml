@@ -35,6 +35,12 @@
     <url>http://digitisingscotland.cs.st-andrews.ac.uk/</url>
     <inceptionYear>2012</inceptionYear>
 
+    <properties>
+        <cli.jar.name>${project.artifactId}_cli-${project.version}</cli.jar.name>
+        <cli.binary.name>classli</cli.binary.name>
+        <cli.binary.name.windows>${cli.binary.name}.exe</cli.binary.name.windows>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -138,6 +144,109 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <version>3.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+
+                    <finalName>${cli.jar.name}</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <archive>
+                        <manifest>
+                            <mainClass>uk.ac.standrews.cs.digitising_scotland.record_classification.cli.Launcher
+                            </mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>1.7.8</version>
+                <configuration>
+                    <headerType>console</headerType>
+                    <outfile>${project.build.directory}/${cli.binary.name.windows}</outfile>
+                    <jar>${project.build.directory}/${cli.jar.name}.jar</jar>
+                    <errTitle>${cli.binary.name} Error</errTitle>
+                    <supportUrl>${project.url}</supportUrl>
+                    <classPath>
+                        <mainClass>uk.ac.standrews.cs.digitising_scotland.record_classification.cli.Launcher</mainClass>
+                        <addDependencies>false</addDependencies>
+                        <preCp>anything</preCp>
+                    </classPath>
+                    <jre>
+                        <minVersion>1.8.0</minVersion>
+                        <initialHeapPercent>20</initialHeapPercent>
+                        <maxHeapPercent>90</maxHeapPercent>
+                    </jre>
+                    <versionInfo>
+                        <fileVersion>1.0.0.1</fileVersion>
+                        <fileDescription>${project.description}</fileDescription>
+                        <txtFileVersion>${project.version}</txtFileVersion>
+                        <copyright>Copyright ${project.inceptionYear} ${project.organization.name}</copyright>
+                        <productVersion>1.0.0.1</productVersion>
+                        <txtProductVersion>${project.version}</txtProductVersion>
+                        <productName>${cli.binary.name}</productName>
+                        <internalName>${cli.binary.name}</internalName>
+                        <originalFilename>${cli.binary.name.windows}</originalFilename>
+                        <companyName>${project.organization.name}</companyName>
+                    </versionInfo>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <concat destfile="${project.build.directory}/${cli.binary.name}" binary="yes">
+                                    <fileset file="${project.build.scriptSourceDirectory}/stub.sh"/>
+                                    <fileset file="${project.build.directory}/${cli.jar.name}.jar"/>
+                                </concat>
+                                <chmod file="${project.build.directory}/${cli.binary.name}" perm="+x"/>
+                                <tar basedir="${project.build.directory}"
+                                     destfile="${project.build.directory}/${cli.binary.name}.tar" excludes="**/*">
+                                    <tarfileset dir="${project.build.directory}" filemode="755">
+                                        <include name="${cli.binary.name}"/>
+                                    </tarfileset>
+                                </tar>
+                                <delete file="${project.build.directory}/${cli.binary.name}"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
