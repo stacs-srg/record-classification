@@ -1,19 +1,18 @@
 # Command Line Interface
 
-`classli` is a Command Line Interface (CLI) that allows users to clean records, train and evaluate classifiers based on
-one or more gold standard data sets, and classify unseen records. It is designed to be easy to use by non-programmers.
+The Command Line Interface (CLI) allows users to clean records, train and evaluate classifiers based on
+one or more gold standard data sets, and classify unseen records. It is intended to be easy to use by non-programmers.
 
 ## Features
 
-- Classification of records using a range of classifiers.
-- Training and evaluation of classifiers.
-- Confusion matrix generation.
-- Spell-checking using user-defined dictionaries.
-- Easy to use.
-- Fluent scripting capability.
+- classification of records using a range of classifiers
+- training and evaluation of classifiers
+- confusion matrix generation
+- cleaning and spell-checking using user-defined dictionaries
+- scripting capability
 
 ## Documentation
 
-- [Installation instructions](install/)
-- [User manual](usage/)
-- [Examples of use](examples/)
+- [installation](install/)
+- [user manual](usage/)
+- [usage examples](examples/)
