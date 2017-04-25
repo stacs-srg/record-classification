@@ -10,7 +10,7 @@ This module provides an automatic record classification tool.
 ### Java API
 
 * [Java API documentation](https://quicksilver.host.cs.st-andrews.ac.uk/apidocs/record-classification/)
-* [download `jar` files](https://quicksilver.host.cs.st-andrews.ac.uk/artifacts/record-classification/)
+* [download jar files](https://quicksilver.host.cs.st-andrews.ac.uk/artifacts/record-classification/)
 * [Maven details](https://github.com/stacs-srg/record-classification/blob/master/README.md)
 
 There is also a stand-alone [command line interface](cli/).
