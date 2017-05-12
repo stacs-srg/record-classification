@@ -20,9 +20,11 @@ This project provides an automatic record classification tool.
 </dependency>
 ```
 
-## Build status
-
 [![CircleCI](https://circleci.com/gh/stacs-srg/record-classification.svg?style=svg)](https://circleci.com/gh/stacs-srg/record-classification)
+
+## Build and coverage status
+
+[![CircleCI](https://circleci.com/gh/stacs-srg/record-classification.svg?style=svg)](https://circleci.com/gh/stacs-srg/record-classification) [![codecov](https://codecov.io/gh/stacs-srg/record-classification/branch/master/graph/badge.svg)](https://codecov.io/gh/stacs-srg/record-classification)
 
 ## See also
 
