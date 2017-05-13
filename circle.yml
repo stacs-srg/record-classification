@@ -1,3 +1,6 @@
-test:
-  override:  # this disables testing in the circleci build, since it runs out of memory
-    - "true"
+# test:
+#  override:  # this disables testing in the circleci build, since it runs out of memory
+#    - "true"
+machine:
+  environment:
+    _JAVA_OPTIONS: "-Xms512m -Xmx2048m"
