@@ -5,9 +5,7 @@ title: record-classification
 
 ## Home
 
-This module provides an automatic record classification tool.
-
-### Java API
+This project provides an automatic record classification tool.
 
 * [Java API documentation](https://quicksilver.host.cs.st-andrews.ac.uk/apidocs/record-classification/)
 * [download jar files](https://quicksilver.host.cs.st-andrews.ac.uk/artifacts/record-classification/)
@@ -19,6 +17,6 @@ There is also a stand-alone [command line interface](cli/).
 
 [![CircleCI](https://circleci.com/gh/stacs-srg/record-classification.svg?style=svg)](https://circleci.com/gh/stacs-srg/record-classification) [![codecov](https://codecov.io/gh/stacs-srg/record-classification/branch/master/graph/badge.svg)](https://codecov.io/gh/stacs-srg/record-classification)
 
-### Contact
+## Contact
 
 Any questions or suggestions may be sent to [Graham Kirby](mailto:graham.kirby@st-andrews.ac.uk). We would welcome any information on others\' experience with the software.
