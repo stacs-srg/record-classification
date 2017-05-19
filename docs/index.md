@@ -15,9 +15,9 @@ This module provides an automatic record classification tool.
 
 There is also a stand-alone [command line interface](cli/).
 
-### Build status
+## Build and coverage status
 
-[![CircleCI](https://circleci.com/gh/stacs-srg/record-classification.svg?style=svg)](https://circleci.com/gh/stacs-srg/record-classification)
+[![CircleCI](https://circleci.com/gh/stacs-srg/record-classification.svg?style=svg)](https://circleci.com/gh/stacs-srg/record-classification) [![codecov](https://codecov.io/gh/stacs-srg/record-classification/branch/master/graph/badge.svg)](https://codecov.io/gh/stacs-srg/record-classification)
 
 ### Contact
 
