@@ -13,6 +13,6 @@ one or more gold standard data sets, and classify unseen records. It is intended
 
 ## Documentation
 
-- [installation](installation/)
+- [installation](installation.html)
 - [user manual](usage/)
 - [usage examples](examples/)
