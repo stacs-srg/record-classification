@@ -22,6 +22,4 @@ one or more gold standard data sets, and classify unseen records. It is intended
 - [user manual](usage/)
 - [usage examples](examples/)
 
-<div style="text-align: center;">
-    <a href="/">Home</a> | <a href="/cli/">CLI</a> 
-</div>
+{% include navigation.html %}
