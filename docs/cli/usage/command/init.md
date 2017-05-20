@@ -15,3 +15,5 @@ The execution of the command above will result in creation of a folder called `.
 Alternatively, the _force_ can be set using its long name:
 
     classli init --force
+
+{% include navigation.html %}

@@ -8,3 +8,5 @@ For instance, the following command:
     evaluate -o evaluation_records_classified.csv
 
 will evaluate the classifier with the evaluation records previously loaded (see [`load` command](#load)), and stores the classified evaluation records into a file within the current working directory called _evaluation_records_classified.csv_.  
+
+{% include navigation.html %}

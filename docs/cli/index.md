@@ -1,8 +1,3 @@
----
-layout: default
-title: record-classification
----
-
 # Command Line Interface
 
 The Command Line Interface (CLI) allows users to clean records, train and evaluate classifiers based on

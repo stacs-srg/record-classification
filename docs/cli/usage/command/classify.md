@@ -11,3 +11,5 @@ For example, the following command:
     classify -o classified_unseen_records.csv
 
 classifies the loaded unseen records and stores the classified records into a file called _classified\_unseen\_records.csv_ within the current working directory.
+
+{% include navigation.html %}

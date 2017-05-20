@@ -62,3 +62,5 @@ Example files:
 * [commands.txt](batch/commands.txt)
 * [gs.csv](batch/gs.csv)
 * [unseen.csv](batch/unseen.csv)
+
+{% include navigation.html %}

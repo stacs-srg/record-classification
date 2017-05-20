@@ -36,3 +36,5 @@ The following pages explain parts 3 to 6, the commands and options offered by `c
 - [`evaluate`](evaluate.html)
 - [`classify`](classify.html)
 - [`experiment`](experiment.html)
+
+{% include navigation.html %}

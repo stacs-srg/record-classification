@@ -63,3 +63,5 @@ It is also possible to set multiple values at once. For example, the following c
     set -c OLR -r 42 -s JSON
 
 sets the classifier to the _online logistic regression_ classifier, the random seed to _42_ and the classifier serialization format to _JSON_. 
+
+{% include navigation.html %}

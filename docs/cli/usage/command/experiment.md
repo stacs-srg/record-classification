@@ -12,3 +12,5 @@ The options of the `experiment` command are:
 * `-c` or `--commands` -- specifies the *mandatory* path to a file containing a batch of commands to be executed, where each line represents a command and its options.
 
 * `-r` or `--repeat` -- specifies the number of times the experiment should be repeated. The default value of this option is set to `5`.
+
+{% include navigation.html %}

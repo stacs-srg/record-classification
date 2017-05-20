@@ -46,3 +46,5 @@ To correct spelling of record labels using a custom dictionary the `spelling` su
     - `LEVENSTEIN` -- the [Levenstein](https://en.wikipedia.org/wiki/Levenshtein_distance) distance function.
     - `DAMERAU_LEVENSHTEIN` -- the [Damerau–Levenshtein](https://en.wikipedia.org/wiki/Damerau–Levenshtein_distance) distance function.
     - `JARO_WINKLER` -- the [Jaro-Winkler](https://en.wikipedia.org/wiki/Jaro–Winkler_distance) distance function.
+
+{% include navigation.html %}

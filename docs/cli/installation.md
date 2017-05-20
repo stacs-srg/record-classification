@@ -50,3 +50,5 @@ was installed, or to another directory of your choice.
     - Ensure that the installation directory is included in the `PATH` environment variable.
 1. If you have modified the `PATH` environment variable, restart the computer for changes to take effect.
 1. To check the installation, open a command prompt window and type `classli -h`, which should print a usage message.
+
+{% include navigation.html %}

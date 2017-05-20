@@ -118,3 +118,5 @@ The *classified_data.csv* file contains five columns:
 - *DETAILS* -- optional details about the internal configuration of the classifier.
 
 Notice how the data for record *2* is changed from *butterfly* to *butterfli*. This is change occurs as part of the cleaning process.
+
+{% include navigation.html %}

@@ -67,3 +67,5 @@ The aggregated results of the evaluation is printed in the console:
     Micro Average Recall:          0.00 ± 0.00
 
 The *±* values are the confidence intervals with 95% confidence level.
+
+{% include navigation.html %}
