@@ -17,4 +17,7 @@ There is also a stand-alone [command line interface](cli/).
 
 Any questions or suggestions may be sent to [Graham Kirby](mailto:graham.kirby@st-andrews.ac.uk). We would welcome any information on others\' experience with the software.
 
-{% include nav.html %}
+<div style="text-align: center;">
+    <a href="/">Home</a> | <a href="/cli/">CLI</a> 
+</div>
+
