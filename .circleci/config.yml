@@ -3,6 +3,9 @@ jobs:
    build:
      docker:
        - image: circleci/openjdk:8
+           environment:
+             - JAVA_OPTS=-Xms512m -Xmx2048m
+             
      steps:
        - checkout
        
