@@ -8,7 +8,7 @@ This project provides an automatic record classification tool.
 <repository>
     <id>uk.ac.standrews.cs.maven.repository</id>
     <name>School of Computer Science Maven Repository</name>
-    <url>http://maven.cs.st-andrews.ac.uk/</url>
+    <url>https://maven.cs.st-andrews.ac.uk/</url>
 </repository>
 ```
         
@@ -26,4 +26,6 @@ This project provides an automatic record classification tool.
 
 ## See also
 
+* [API documentation](https://quicksilver.host.cs.st-andrews.ac.uk/apidocs/record-classification/)
+* [project website](https://stacs-srg.github.io/record-classification/)
 * [relevant Maven goals](https://github.com/stacs-srg/hub/tree/master/maven) (private)
