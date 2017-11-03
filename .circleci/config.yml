@@ -5,4 +5,19 @@ jobs:
        - image: circleci/openjdk:8
      steps:
        - checkout
-       - run: echo "hello world"
+       
+       - restore_cache:
+           key: record-classification-{{ checksum "pom.xml" }}
+      
+       - run: mvn dependency:go-offline
+      
+       - save_cache:
+           paths:
+             - ~/.m2
+           key: record-classification-{{ checksum "pom.xml" }}
+      
+       - run: mvn test
+      
+       - store_test_results:
+           path: target/surefire-reports
+      
