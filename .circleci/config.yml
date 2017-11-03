@@ -16,7 +16,7 @@ jobs:
              - ~/.m2
            key: record-classification-{{ checksum "pom.xml" }}
       
-       - run: mvn package
+       - run: mvn integration-test
       
        - store_test_results:
            path: target/surefire-reports
