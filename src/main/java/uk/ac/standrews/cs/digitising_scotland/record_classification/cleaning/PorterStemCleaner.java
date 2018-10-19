@@ -16,8 +16,9 @@
  */
 package uk.ac.standrews.cs.digitising_scotland.record_classification.cleaning;
 
-import org.apache.lucene.analysis.*;
-import org.apache.lucene.analysis.core.*;
+import org.apache.lucene.analysis.LowerCaseFilter;
+import org.apache.lucene.analysis.TokenFilter;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.en.PorterStemFilter;
 
 /**

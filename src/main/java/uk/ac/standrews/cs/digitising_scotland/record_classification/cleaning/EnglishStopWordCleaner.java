@@ -16,11 +16,11 @@
  */
 package uk.ac.standrews.cs.digitising_scotland.record_classification.cleaning;
 
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
-import org.apache.lucene.analysis.util.CharArraySet;
 
 /**
  * Removes english stop words from records. By default this class cleans the case-sensitive set of stop words defined in {@link #DEFAULT_STOP_WORDS}.

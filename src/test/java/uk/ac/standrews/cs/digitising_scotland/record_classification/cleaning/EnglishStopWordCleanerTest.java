@@ -16,11 +16,14 @@
  */
 package uk.ac.standrews.cs.digitising_scotland.record_classification.cleaning;
 
-import org.apache.lucene.analysis.util.*;
-import org.junit.runner.*;
-import org.junit.runners.*;
+import org.apache.lucene.analysis.CharArraySet;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Tests {@link EnglishStopWordCleaner}.

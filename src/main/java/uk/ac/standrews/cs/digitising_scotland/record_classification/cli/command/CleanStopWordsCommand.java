@@ -16,18 +16,24 @@
  */
 package uk.ac.standrews.cs.digitising_scotland.record_classification.cli.command;
 
-import com.beust.jcommander.*;
-import com.beust.jcommander.converters.*;
-import org.apache.lucene.analysis.util.*;
-import uk.ac.standrews.cs.digitising_scotland.record_classification.cleaning.*;
-import uk.ac.standrews.cs.digitising_scotland.record_classification.cli.*;
-import uk.ac.standrews.cs.digitising_scotland.record_classification.cli.supplier.*;
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
+import com.beust.jcommander.converters.PathConverter;
+import org.apache.lucene.analysis.CharArraySet;
+import uk.ac.standrews.cs.digitising_scotland.record_classification.cleaning.Cleaner;
+import uk.ac.standrews.cs.digitising_scotland.record_classification.cleaning.EnglishStopWordCleaner;
+import uk.ac.standrews.cs.digitising_scotland.record_classification.cli.Configuration;
+import uk.ac.standrews.cs.digitising_scotland.record_classification.cli.Launcher;
+import uk.ac.standrews.cs.digitising_scotland.record_classification.cli.supplier.CharsetSupplier;
 
-import java.io.*;
-import java.nio.charset.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.*;
+import java.io.IOError;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static uk.ac.standrews.cs.digitising_scotland.record_classification.cli.command.LoadCommand.OPTION_CHARSET_SHORT;
 import static uk.ac.standrews.cs.digitising_scotland.record_classification.cli.command.LoadCommand.OPTION_SOURCE_SHORT;

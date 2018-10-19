@@ -69,7 +69,7 @@ public class Launcher {
         this(Configuration.DEFAULT_WORKING_DIRECTORY);
     }
 
-    public Launcher(Path working_directory) {
+    public Launcher(final Path working_directory) {
 
         loadConfiguration(working_directory);
     }
@@ -80,7 +80,7 @@ public class Launcher {
             try {
                 configuration = Configuration.load(working_directory);
             }
-            catch (RuntimeException e) {
+            catch (final RuntimeException e) {
                 LOGGER.severe(e.getMessage());
                 LOGGER.warning("ignored existing configuration due to load error.");
             }
@@ -104,13 +104,13 @@ public class Launcher {
 
                 LogManager.getLogManager().readConfiguration(Configuration.class.getResourceAsStream("logging.properties"));
             }
-            catch (IOException e) {
+            catch (final IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void main(String... args) {
+    public static void main(final String... args) {
 
         try {
             final Launcher launcher = new Launcher();
@@ -118,22 +118,22 @@ public class Launcher {
             launcher.parse(args);
             launcher.run();
         }
-        catch (RuntimeException error) {
+        catch (final RuntimeException error) {
 
             final Throwable cause = error.getCause();
 
             if (cause instanceof ConfigurationDirectoryAlreadyExistsException) {
-                ConfigurationDirectoryAlreadyExistsException exception = (ConfigurationDirectoryAlreadyExistsException) cause;
+                final ConfigurationDirectoryAlreadyExistsException exception = (ConfigurationDirectoryAlreadyExistsException) cause;
                 LOGGER.log(Level.SEVERE, String.format("Configuration directory '%s' already exists. Use %s flag to %s command to force deletion of existing directory.", exception.getFile(), InitCommand.OPTION_FORCE_SHORT, InitCommand.NAME), error);
             }
 
             else if (cause instanceof NoSuchFileException) {
-                NoSuchFileException exception = (NoSuchFileException) cause;
+                final NoSuchFileException exception = (NoSuchFileException) cause;
                 LOGGER.log(Level.SEVERE, String.format("File '%s' not found.", exception.getFile()), error);
             }
 
             else if (cause instanceof IOException) {
-                LOGGER.log(Level.SEVERE, String.format("File format error: %s (see http://digitisingscotland.cs.st-andrews.ac.uk/record_classification/cli/usage/).", cause), error);
+                LOGGER.log(Level.SEVERE, String.format("File format error: %s.", cause), error);
             }
 
             else {
@@ -142,7 +142,7 @@ public class Launcher {
 
             System.exit(1);
         }
-        catch (Exception error) {
+        catch (final Exception error) {
 
             final String message = error.getMessage();
 
@@ -162,7 +162,7 @@ public class Launcher {
         //TODO set exit value based on error code.
     }
 
-    void addCommand(Command command) {
+    void addCommand(final Command command) {
 
         commander.addCommand(command);
     }
@@ -226,7 +226,7 @@ public class Launcher {
                 runCommand();
             });
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -249,13 +249,13 @@ public class Launcher {
             try {
                 configuration.persist();
             }
-            catch (IOException e) {
+            catch (final IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    private void requireCommand(final String command) {
+    private static void requireCommand(final String command) {
 
         if (command == null) {
             throw new ParameterException("Please specify a command");

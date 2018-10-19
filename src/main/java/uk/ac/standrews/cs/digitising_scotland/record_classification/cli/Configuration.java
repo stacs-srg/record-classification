@@ -118,7 +118,7 @@ public class Configuration extends ClassificationContext {
         this(DEFAULT_WORKING_DIRECTORY);
     }
 
-    public Configuration(Path working_directory) {
+    public Configuration(final Path working_directory) {
 
         setWorkingDirectory(working_directory);
     }
@@ -164,7 +164,7 @@ public class Configuration extends ClassificationContext {
         return load(DEFAULT_WORKING_DIRECTORY);
     }
 
-    public static Configuration load(Path working_directory) {
+    public static Configuration load(final Path working_directory) {
 
         final Path home = getHome(working_directory);
         final Path config_file = getConfigurationFile(home);
@@ -174,7 +174,7 @@ public class Configuration extends ClassificationContext {
             configuration.setWorkingDirectory(working_directory);
             return configuration;
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             throw new RuntimeException("Failed to load configuration from" + home + ", cause: " + e.getMessage(), e);
         }
     }
@@ -189,15 +189,14 @@ public class Configuration extends ClassificationContext {
         return home.resolve(CONFIG_FILE_NAME);
     }
 
-    public static void persistBucketAsCSV(Bucket bucket, Path destination, CSVFormat format, Charset charset) throws IOException {
+    public static void persistBucketAsCSV(final Bucket bucket, final Path destination, final CSVFormat format, final Charset charset) throws IOException {
 
         if (bucket != null) {
 
-            try (final BufferedWriter out = Files.newBufferedWriter(destination, charset)) {
+            try (final BufferedWriter out = Files.newBufferedWriter(destination, charset);
+                final CSVPrinter printer = format.print(out)) {
 
-                final CSVPrinter printer = format.print(out);
-
-                for (Record record : bucket) {
+                for (final Record record : bucket) {
 
                     final Classification classification = record.getClassification();
 
@@ -217,8 +216,8 @@ public class Configuration extends ClassificationContext {
 
         final Bucket bucket = new Bucket();
 
-        try (final BufferedReader in = Files.newBufferedReader(source, RESOURCE_CHARSET)) {
-            final CSVParser parser = RECORD_CSV_FORMAT.withSkipHeaderRecord().parse(in);
+        try (final BufferedReader in = Files.newBufferedReader(source, RESOURCE_CHARSET);
+             final CSVParser parser = RECORD_CSV_FORMAT.withSkipHeaderRecord().parse(in)) {
             StreamSupport.stream(parser.spliterator(), false).map(Configuration::toRecord).forEach(bucket::add);
         }
         return bucket;
@@ -325,7 +324,7 @@ public class Configuration extends ClassificationContext {
         return super.getClassifier();
     }
 
-    private <Value> void loadLazily(Supplier<Value> loader, Consumer<Value> setter, boolean already_set, String parameter_name) {
+    private static <Value> void loadLazily(final Supplier<Value> loader, final Consumer<Value> setter, final boolean already_set, final String parameter_name) {
 
         if (!already_set && loader != null) {
             LOGGER.info(() -> String.format("loading %s...", parameter_name));
@@ -371,7 +370,7 @@ public class Configuration extends ClassificationContext {
                 try {
                     FileUtils.copyDirectory(current_home.toFile(), new_home.toFile());
                 }
-                catch (IOException e) {
+                catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -436,7 +435,7 @@ public class Configuration extends ClassificationContext {
         return getClassifierOptional().orElseThrow(() -> getMissingParameterException("classifier"));
     }
 
-    private ParameterException getMissingParameterException(final String parameter_name) {
+    private static ParameterException getMissingParameterException(final String parameter_name) {
 
         return new ParameterException(String.format("%s required but not set; please specify %s.", parameter_name, parameter_name));
     }
@@ -547,10 +546,10 @@ public class Configuration extends ClassificationContext {
         }
     }
 
-    private static void setRootLoggerLevelByHandler(Class<? extends Handler> handler_type, Level level) {
+    private static void setRootLoggerLevelByHandler(final Class<? extends Handler> handler_type, final Level level) {
 
         final Handler[] handlers = Logger.getGlobal().getHandlers();
-        for (Handler handler : handlers) {
+        for (final Handler handler : handlers) {
             if (handler_type.isAssignableFrom(handler.getClass())) {
                 handler.setLevel(level);
             }
