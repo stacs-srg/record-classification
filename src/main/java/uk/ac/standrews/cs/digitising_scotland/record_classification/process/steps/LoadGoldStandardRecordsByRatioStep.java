@@ -16,13 +16,13 @@
  */
 package uk.ac.standrews.cs.digitising_scotland.record_classification.process.steps;
 
-import uk.ac.standrews.cs.digitising_scotland.record_classification.model.Bucket;
 import uk.ac.standrews.cs.digitising_scotland.record_classification.cli.util.Validators;
+import uk.ac.standrews.cs.digitising_scotland.record_classification.model.Bucket;
 import uk.ac.standrews.cs.digitising_scotland.record_classification.process.ClassificationContext;
 import uk.ac.standrews.cs.digitising_scotland.record_classification.process.Step;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -72,12 +72,12 @@ public class LoadGoldStandardRecordsByRatioStep implements Step {
     protected Bucket loadRecords() {
 
         final Bucket gold_standard_records;
-        try (final BufferedReader reader = Files.newBufferedReader(path, charset)) {
 
-            gold_standard_records = new Bucket(reader, delimiter.charAt(0));
+        try (final InputStream stream = Files.newInputStream(path)) {
 
-        }
-        catch (IOException e) {
+            gold_standard_records = new Bucket(stream, delimiter.charAt(0));
+
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return gold_standard_records;

@@ -39,8 +39,7 @@ import uk.ac.standrews.cs.utilities.dataset.DataSet;
 import uk.ac.standrews.cs.utilities.tables.ConfidenceIntervals;
 import uk.ac.standrews.cs.utilities.tables.Means;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -492,7 +491,9 @@ public class HiscoClassificationWithPerGroupAnalysis extends Experiment {
     private void populateCodeLabelLookup() throws IOException {
 
         if (code_label_lookup_path != null) {
-            final DataSet code_label_dataset = new DataSet(Files.newBufferedReader(code_label_lookup_path));
+
+            final InputStream stream = Files.newInputStream(code_label_lookup_path);
+            final DataSet code_label_dataset = new DataSet(stream);
 
             for (List<String> cells : code_label_dataset.getRecords()) {
                 code_label_lookup.put(cells.get(CODE_INDEX), cells.get(LABEL_INDEX));
@@ -506,7 +507,8 @@ public class HiscoClassificationWithPerGroupAnalysis extends Experiment {
         //TODO embed this into the steps of the last classification process.
         final ClassifierResults last_results = getLast(results);
         final Classifier classifier = last_results.getContexts().get(0).getClassifier();
-        final DataSet unseen_data_set = new DataSet(Files.newBufferedReader(unseen_data_path));
+        final InputStream stream = Files.newInputStream(unseen_data_path);
+        final DataSet unseen_data_set = new DataSet(stream);
         final Bucket unseen_data_bucket = new Bucket(unseen_data_set);
         final Bucket classified_unseen_data = classifier.classify(unseen_data_bucket);
         final List<String> classified_dataset_labels = Arrays.asList("ID", "RAW_DATA", "OUTPUT_CODE", "OUTPUT_CODE_SCHEME_LABEL", "CONFIDENCE");

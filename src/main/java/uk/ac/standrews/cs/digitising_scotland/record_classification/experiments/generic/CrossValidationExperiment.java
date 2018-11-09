@@ -86,8 +86,8 @@ public class CrossValidationExperiment extends Experiment {
 
         for (Path gold_standard_file : gold_standard_files) {
 
-            try (final BufferedReader reader = Files.newBufferedReader(gold_standard_file)) {
-                final Bucket records = new Bucket(reader, LoadStep.DEFAULT_DELIMITER.charAt(0));
+            try (final InputStream stream = Files.newInputStream(gold_standard_file)) {
+                final Bucket records = new Bucket(stream, LoadStep.DEFAULT_DELIMITER.charAt(0));
                 gold_standard.add(records);
             }
         }

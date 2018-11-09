@@ -16,13 +16,13 @@
  */
 package uk.ac.standrews.cs.digitising_scotland.record_classification.process.steps;
 
-import uk.ac.standrews.cs.digitising_scotland.record_classification.model.Bucket;
 import uk.ac.standrews.cs.digitising_scotland.record_classification.cli.supplier.CharsetSupplier;
+import uk.ac.standrews.cs.digitising_scotland.record_classification.model.Bucket;
 import uk.ac.standrews.cs.digitising_scotland.record_classification.process.ClassificationContext;
 import uk.ac.standrews.cs.digitising_scotland.record_classification.process.Step;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,10 +64,10 @@ public abstract class LoadStep implements Step {
     @Override
     public void perform(final ClassificationContext context)  {
 
-        try (final BufferedReader reader = Files.newBufferedReader(path, charset)) {
+        try (final InputStream stream = Files.newInputStream(path)) {
 
             clearRecords(context);
-            getRecords(context).add(new Bucket(reader, delimiter));
+            getRecords(context).add(new Bucket(stream, delimiter));
 
         } catch (IOException e) {
             throw new RuntimeException(e);

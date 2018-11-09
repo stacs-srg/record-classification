@@ -22,12 +22,9 @@ import uk.ac.standrews.cs.digitising_scotland.record_classification.exceptions.D
 import uk.ac.standrews.cs.digitising_scotland.record_classification.exceptions.InputFileFormatException;
 import uk.ac.standrews.cs.utilities.dataset.DataSet;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -38,10 +35,10 @@ public class Bucket implements Iterable<Record>, Serializable {
 
     private static final long serialVersionUID = 7216381249689825103L;
 
-    public static final String FORMAT_ERROR_MESSAGE = "record should contain id, data and optional code and confidence";
+    private static final String FORMAT_ERROR_MESSAGE = "record should contain id, data and optional code and confidence";
 
     private final TreeSet<Record> records;
-    private boolean auto_allocate_ids;
+    private final boolean auto_allocate_ids;
     private int next_id = 1;
 
     /** Instantiates a new empty bucket. */
@@ -50,38 +47,33 @@ public class Bucket implements Iterable<Record>, Serializable {
         this(false);
     }
 
-    public Bucket(boolean auto_allocate_ids) {
+    public Bucket(final boolean auto_allocate_ids) {
 
         records = new TreeSet<>();
         this.auto_allocate_ids = auto_allocate_ids;
     }
 
-    public Bucket(File records, Charset charset, char delimiter) throws IOException {
+    public Bucket(final InputStream stream, final char delimiter) throws IOException {
 
-        this(Files.newBufferedReader(records.toPath(), charset), delimiter);
+        this(new DataSet(stream, delimiter));
     }
 
-    public Bucket(Reader reader, char delimiter) throws IOException {
-
-        this(new DataSet(reader, delimiter));
-    }
-
-    public Bucket(DataSet data_set) {
+    public Bucket(final DataSet data_set) {
 
         this();
 
         boolean first = true;
-        for (List<String> record : data_set.getRecords()) {
+        for (final List<String> record : data_set.getRecords()) {
 
             try {
-                int id = extractId(record);
-                String data = extractData(record);
-                Classification classification = extractClassification(record, data);
+                final int id = extractId(record);
+                final String data = extractData(record);
+                final Classification classification = extractClassification(record, data);
 
                 add(new Record(id, data, classification));
 
             }
-            catch (InputFileFormatException e) {
+            catch (final InputFileFormatException e) {
 
                 // If this is the first row, assume it's a header row and ignore exception.
                 if (!first) {
@@ -94,13 +86,13 @@ public class Bucket implements Iterable<Record>, Serializable {
         }
     }
 
-    public Bucket(Collection<Record> records) {
+    public Bucket(final Collection<Record> records) {
 
         this();
         add(records);
     }
 
-    public Bucket(Record... records) {
+    public Bucket(final Record... records) {
 
         this(Arrays.asList(records));
     }
@@ -110,7 +102,7 @@ public class Bucket implements Iterable<Record>, Serializable {
         return records.isEmpty();
     }
 
-    public List<Bucket> split(int ways, Random random) {
+    public List<Bucket> split(final int ways, final Random random) {
 
         if (ways < 1) {
             throw new IllegalArgumentException("the number of splits must be at least 1");
@@ -124,7 +116,7 @@ public class Bucket implements Iterable<Record>, Serializable {
         final List<Record> source_records = getRecordsList();
         Collections.shuffle(source_records, random);
         final Iterator<Bucket> splits_iterator = Iterables.cycle(splits).iterator();
-        for (Record record : source_records) {
+        for (final Record record : source_records) {
             splits_iterator.next().add(record);
         }
 
@@ -148,7 +140,7 @@ public class Bucket implements Iterable<Record>, Serializable {
 
     public final void add(final Collection<Record> records) {
 
-        int original_size = this.records.size();
+        final int original_size = this.records.size();
 
         if (auto_allocate_ids) {
             this.records.addAll(reallocateIds(records));
@@ -157,7 +149,7 @@ public class Bucket implements Iterable<Record>, Serializable {
             this.records.addAll(records);
         }
 
-        int final_size = this.records.size();
+        final int final_size = this.records.size();
 
         if (final_size != original_size + records.size()) {
             throw new DuplicateRecordIdException();
@@ -174,11 +166,11 @@ public class Bucket implements Iterable<Record>, Serializable {
         return StreamSupport.stream(spliterator(), true);
     }
 
-    public DataSet toDataSet(List<String> column_labels) {
+    public DataSet toDataSet(final List<String> column_labels) {
 
         final DataSet dataset = new DataSet(column_labels);
 
-        for (Record record : records) {
+        for (final Record record : records) {
 
             final String column_0 = String.valueOf(record.getId());
             final String column_1 = record.getOriginalData();
@@ -191,11 +183,11 @@ public class Bucket implements Iterable<Record>, Serializable {
         return dataset;
     }
 
-    public DataSet toDataSet2(List<String> column_labels) {
+    public DataSet toDataSet2(final List<String> column_labels) {
 
         final DataSet dataset = new DataSet(column_labels);
 
-        for (Record record : records) {
+        for (final Record record : records) {
 
             final String column_0 = String.valueOf(record.getId());
             final String column_1 = record.getOriginalData();
@@ -216,7 +208,7 @@ public class Bucket implements Iterable<Record>, Serializable {
         return new CopyOnWriteArrayList<>(records);
     }
 
-    public Optional<Record> findRecordById(int id) {
+    public Optional<Record> findRecordById(final int id) {
 
         return records.stream().filter(record -> record.getId() == id).findFirst();
     }
@@ -275,7 +267,7 @@ public class Bucket implements Iterable<Record>, Serializable {
 
         final Bucket difference = new Bucket();
 
-        for (Record record : this) {
+        for (final Record record : this) {
             if (!other.contains(record)) {
                 difference.add(record);
             }
@@ -297,7 +289,7 @@ public class Bucket implements Iterable<Record>, Serializable {
 
     public boolean containsData(final String data) {
 
-        for (Record record : this) {
+        for (final Record record : this) {
             if (record.getData().equals(data))
                 return true;
         }
@@ -313,9 +305,9 @@ public class Bucket implements Iterable<Record>, Serializable {
      */
     public Bucket stripRecordClassifications() {
 
-        Bucket unclassified_bucket = new Bucket();
+        final Bucket unclassified_bucket = new Bucket();
 
-        for (Record record : this) {
+        for (final Record record : this) {
             unclassified_bucket.add(new Record(record.getId(), record.getData(), record.getOriginalData()));
         }
 
@@ -329,9 +321,9 @@ public class Bucket implements Iterable<Record>, Serializable {
      */
     public Bucket makeUniqueDataRecords() {
 
-        Map<String, Record> unique_data_records = new HashMap<>();
+        final Map<String, Record> unique_data_records = new HashMap<>();
 
-        for (Record record : this) {
+        for (final Record record : this) {
             unique_data_records.put(record.getOriginalData(), record);
         }
 
@@ -348,7 +340,7 @@ public class Bucket implements Iterable<Record>, Serializable {
      * @param selection_probability the probability of a record being selected expressed within inclusive range of {@code 0.0}  to {@code 1.0}
      * @return a new bucket containing a randomly selected subset of this bucket's records
      */
-    public Bucket randomSubset(final Random random, double selection_probability) {
+    public Bucket randomSubset(final Random random, final double selection_probability) {
 
         final Bucket subset = new Bucket();
 
@@ -361,7 +353,7 @@ public class Bucket implements Iterable<Record>, Serializable {
             final Bucket not_selected = new Bucket();
             final int expected_subset_size = (int) (size() * selection_probability);
 
-            for (Record record : this) {
+            for (final Record record : this) {
                 if (subset.size() < expected_subset_size && random.nextDouble() < selection_probability) {
                     subset.add(record);
                 }
@@ -371,7 +363,7 @@ public class Bucket implements Iterable<Record>, Serializable {
             }
 
             // Add further records as necessary to make up to required size.
-            for (Record record : not_selected) {
+            for (final Record record : not_selected) {
                 if (subset.size() < expected_subset_size) {
                     subset.add(record);
                 }
@@ -381,7 +373,7 @@ public class Bucket implements Iterable<Record>, Serializable {
         return subset;
     }
 
-    private int extractId(List<String> record) {
+    private int extractId(final List<String> record) {
 
         if (record.size() < 1) {
             throw new InputFileFormatException(FORMAT_ERROR_MESSAGE);
@@ -392,12 +384,12 @@ public class Bucket implements Iterable<Record>, Serializable {
             return Integer.parseInt(id_string);
 
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             throw new InputFileFormatException("invalid numerical id: " + id_string);
         }
     }
 
-    private String extractData(List<String> record) {
+    private String extractData(final List<String> record) {
 
         if (record.size() < 2) {
             throw new InputFileFormatException(FORMAT_ERROR_MESSAGE);
@@ -406,20 +398,20 @@ public class Bucket implements Iterable<Record>, Serializable {
         return record.get(1);
     }
 
-    private Classification extractClassification(List<String> record, String data) {
+    private Classification extractClassification(final List<String> record, final String data) {
 
         if (record.size() < 3) {
             return Classification.UNCLASSIFIED;
         }
 
-        String code = record.get(2);
-        double confidence = extractConfidence(record);
-        String detail = extractDetail(record);
+        final String code = record.get(2);
+        final double confidence = extractConfidence(record);
+        final String detail = extractDetail(record);
 
         return code.isEmpty() ? Classification.UNCLASSIFIED : new Classification(code, new TokenList(data), confidence, detail);
     }
 
-    private double extractConfidence(List<String> record) {
+    private double extractConfidence(final List<String> record) {
 
         if (record.size() < 4) {
             return 0.0;
@@ -430,17 +422,17 @@ public class Bucket implements Iterable<Record>, Serializable {
             return Double.parseDouble(confidence_string);
 
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             throw new InputFileFormatException("invalid numerical confidence: " + confidence_string);
         }
     }
 
-    private String extractDetail(List<String> record) {
+    private String extractDetail(final List<String> record) {
 
         return record.size() < 5 ? null : record.get(4);
     }
 
-    private Collection<Record> reallocateIds(Collection<Record> records) {
+    private Collection<Record> reallocateIds(final Collection<Record> records) {
 
         return records.stream().map(record -> new Record(next_id++, record.getData(), record.getOriginalData(), record.getClassification())).collect(Collectors.toList());
     }

@@ -21,9 +21,10 @@ import uk.ac.standrews.cs.utilities.FileManipulation;
 import uk.ac.standrews.cs.utilities.dataset.DataSet;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -43,10 +44,10 @@ public class AnonymiseText {
     public static void main(final String[] args) throws IOException {
 
         try (
-                InputStreamReader inputStreamReader = FileManipulation.getInputStreamReader(Paths.get(args[0]));
-                OutputStreamWriter out = FileManipulation.getOutputStreamWriter(Paths.get(args[1]))) {
+                final InputStream input_stream = Files.newInputStream(Paths.get(args[0]));
+                final OutputStreamWriter out = FileManipulation.getOutputStreamWriter(Paths.get(args[1]))) {
 
-            final DataSet source_data = new DataSet(inputStreamReader, ',');
+            final DataSet source_data = new DataSet(input_stream, ',');
             final DataSet anonymised_data = new DataSet(Arrays.asList("id", "data", "code"));
 
             for (final List<String> record : source_data.getRecords()) {
