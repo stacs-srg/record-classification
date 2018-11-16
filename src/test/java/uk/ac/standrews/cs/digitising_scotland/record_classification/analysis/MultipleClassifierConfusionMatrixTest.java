@@ -22,7 +22,7 @@ import uk.ac.standrews.cs.digitising_scotland.record_classification.model.Classi
 import uk.ac.standrews.cs.utilities.FileManipulation;
 import uk.ac.standrews.cs.utilities.dataset.DataSet;
 
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -35,30 +35,25 @@ public class MultipleClassifierConfusionMatrixTest {
 
     private static final double DELTA = 0.001;
 
-    private DataSet classified_records_csv;
-    private DataSet gold_standard_records_csv;
-
     private StrictConfusionMatrix matrix;
 
     @Before
     public void setUp() throws Exception {
 
-        try (InputStreamReader reader = FileManipulation.getInputStreamReaderForResource(MultipleClassifierConfusionMatrixTest.class, CLASSIFIED_FILE_NAME)) {
+        try (final InputStream stream1 = FileManipulation.getInputStreamForResource(MultipleClassifierConfusionMatrixTest.class, CLASSIFIED_FILE_NAME);
+             final InputStream stream2 = FileManipulation.getInputStreamForResource(MultipleClassifierConfusionMatrixTest.class, GOLD_STANDARD_FILE_NAME)) {
 
-            classified_records_csv = new DataSet(reader, ',');
+            final DataSet classified_records_csv = new DataSet(stream1, ',');
+            final DataSet gold_standard_records_csv = new DataSet(stream2, ',');
+
+            matrix = new StrictConfusionMatrix(classified_records_csv, gold_standard_records_csv);
         }
-        try (InputStreamReader reader = FileManipulation.getInputStreamReaderForResource(MultipleClassifierConfusionMatrixTest.class, GOLD_STANDARD_FILE_NAME)) {
-
-            gold_standard_records_csv = new DataSet(reader, ',');
-        }
-
-        matrix = new StrictConfusionMatrix(classified_records_csv, gold_standard_records_csv);
     }
 
     @Test
     public void perCodeClassificationsCountedCorrectly() {
 
-        Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
+        final Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
 
         assertCount(2, "fish", classification_counts);
         assertCount(2, "mammal", classification_counts);
@@ -73,7 +68,7 @@ public class MultipleClassifierConfusionMatrixTest {
     @Test
     public void truePositivesCountedCorrectly() {
 
-        Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
+        final Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
 
         assertCount(1, "fish", true_positive_counts);
         assertCount(1, "mammal", true_positive_counts);
@@ -88,7 +83,7 @@ public class MultipleClassifierConfusionMatrixTest {
     @Test
     public void trueNegativesCountedCorrectly() {
 
-        Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
+        final Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
 
         assertCount(5, "fish", true_negative_counts);
         assertCount(4, "mammal", true_negative_counts);
@@ -103,7 +98,7 @@ public class MultipleClassifierConfusionMatrixTest {
     @Test
     public void falsePositivesCountedCorrectly() {
 
-        Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
+        final Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
 
         assertCount(1, "fish", false_positive_counts);
         assertCount(1, "mammal", false_positive_counts);
@@ -120,7 +115,7 @@ public class MultipleClassifierConfusionMatrixTest {
     @Test
     public void falseNegativesCountedCorrectly() {
 
-        Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
+        final Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
 
         assertCount(0, "fish", false_negative_counts);
         assertCount(1, "mammal", false_negative_counts);
@@ -140,17 +135,17 @@ public class MultipleClassifierConfusionMatrixTest {
         assertEquals(3.0 / 7.0, matrix.proportionOfRecordsWithCorrectNumberOfClassifications(), DELTA);
     }
 
-    private void assertCount(int count, String code, Map<String, AtomicInteger> counts) {
+    private static void assertCount(final int count, final String code, final Map<String, AtomicInteger> counts) {
 
         if (counts.containsKey(code)) {
             assertEquals(count, counts.get(code).get());
         }
     }
 
-    private double average(double... numbers) {
+    private static double average(final double... numbers) {
 
         double sum = 0.0;
-        for (double n : numbers) {
+        for (final double n : numbers) {
             sum += n;
         }
         return sum / numbers.length;

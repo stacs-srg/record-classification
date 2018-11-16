@@ -27,8 +27,8 @@ import uk.ac.standrews.cs.digitising_scotland.record_classification.model.Record
 import uk.ac.standrews.cs.digitising_scotland.record_classification.process.ClassificationContext;
 import uk.ac.standrews.cs.utilities.FileManipulation;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -38,17 +38,17 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class ClassificationProcessInternalTest {
 
-    public static final String TRAINING_DATA_1_FILE_NAME = "training_set1.csv";
-    public static final String TRAINING_DATA_2_FILE_NAME = "training_set2.csv";
-    public static final String TRAINING_DATA_3_FILE_NAME = "training_set3.csv";
+    private static final String TRAINING_DATA_1_FILE_NAME = "training_set1.csv";
+    private static final String TRAINING_DATA_2_FILE_NAME = "training_set2.csv";
+    private static final String TRAINING_DATA_3_FILE_NAME = "training_set3.csv";
 
-    public static final long SEED = 234252345;
+    private static final long SEED = 234252345;
     private static final double DELTA = 0.001;
 
-    private List<Path> gold_standard_files;
-    List<Double> training_ratios;
+    private final List<Path> gold_standard_files;
+    private final List<Double> training_ratios;
 
-    public ClassificationProcessInternalTest(List<Path> gold_standard_files, List<Double> training_ratios) {
+    public ClassificationProcessInternalTest(final List<Path> gold_standard_files, final List<Double> training_ratios) {
 
         this.gold_standard_files = gold_standard_files;
         this.training_ratios = training_ratios;
@@ -57,11 +57,11 @@ public class ClassificationProcessInternalTest {
     @Parameterized.Parameters
     public static Collection<Object[]> generateData() {
 
-        Path path1 = FileManipulation.getResourcePath(ClassificationProcessInternalTest.class, TRAINING_DATA_1_FILE_NAME);
-        Path path2 = FileManipulation.getResourcePath(ClassificationProcessInternalTest.class, TRAINING_DATA_2_FILE_NAME);
-        Path path3 = FileManipulation.getResourcePath(ClassificationProcessInternalTest.class, TRAINING_DATA_3_FILE_NAME);
+        final Path path1 = FileManipulation.getResourcePath(ClassificationProcessInternalTest.class, TRAINING_DATA_1_FILE_NAME);
+        final Path path2 = FileManipulation.getResourcePath(ClassificationProcessInternalTest.class, TRAINING_DATA_2_FILE_NAME);
+        final Path path3 = FileManipulation.getResourcePath(ClassificationProcessInternalTest.class, TRAINING_DATA_3_FILE_NAME);
 
-        List<Object[]> result = new ArrayList<>();
+        final List<Object[]> result = new ArrayList<>();
 
         result.add(new Object[]{Arrays.asList(path1, path2), Arrays.asList(1.0, 0.5)});
         result.add(new Object[]{Arrays.asList(path1, path2, path3), Arrays.asList(1.0, 1.0, 1.0)});
@@ -81,40 +81,40 @@ public class ClassificationProcessInternalTest {
 
         process.configureSteps();
 
-        ClassificationContext context = new ClassificationContext(ClassifierSupplier.EXACT_MATCH.get(), new Random(SEED));
+        final ClassificationContext context = new ClassificationContext(ClassifierSupplier.EXACT_MATCH.get(), new Random(SEED));
 
         try {
             process.call(context);
         }
-        catch (UnknownDataException e) {
+        catch (final UnknownDataException e) {
             // Don't care about evaluation data not being in the gold standard.
         }
 
-        int training_records_size = context.getTrainingRecords().size();
-        int evaluation_records_size = context.getEvaluationRecords().size();
+        final int training_records_size = context.getTrainingRecords().size();
+        final int evaluation_records_size = context.getEvaluationRecords().size();
 
         assertEquals(totalGoldStandardRecordsSize(), training_records_size + evaluation_records_size);
         assertEquals(totalEvaluationRecordsSize(), evaluation_records_size);
 
         for (int i = 0; i < gold_standard_files.size(); i++) {
 
-            Path path = gold_standard_files.get(i);
-            Double ratio = training_ratios.get(i);
+            final Path path = gold_standard_files.get(i);
+            final Double ratio = training_ratios.get(i);
 
             assertEquals(ratio, proportionOfRecordsInBucket(path, context.getTrainingRecords()), DELTA);
-            double actual = proportionOfRecordsInBucket(path, context.getEvaluationRecords());
+            final double actual = proportionOfRecordsInBucket(path, context.getEvaluationRecords());
             assertEquals(1.0 - ratio, actual, DELTA);
         }
     }
 
-    private double proportionOfRecordsInBucket(Path gold_standard_path, Bucket bucket) throws IOException {
+    private static double proportionOfRecordsInBucket(final Path gold_standard_path, final Bucket bucket) throws IOException {
 
         double number_of_records = 0.0;
         double number_of_records_in_training_bucket = 0.0;
 
-        try (BufferedReader reader = Files.newBufferedReader(gold_standard_path, FileManipulation.FILE_CHARSET)) {
+        try (final InputStream stream = Files.newInputStream(gold_standard_path)) {
 
-            for (Record r : new Bucket(reader, ',')) {
+            for (final Record r : new Bucket(stream, ',')) {
 
                 number_of_records++;
                 if (bucket.containsData(r.getData())) number_of_records_in_training_bucket++;
@@ -127,7 +127,7 @@ public class ClassificationProcessInternalTest {
     private int totalGoldStandardRecordsSize() throws IOException {
 
         int total = 0;
-        for (Path path : gold_standard_files) {
+        for (final Path path : gold_standard_files) {
             total += FileManipulation.countLines(path) - 1;
         }
         return total;

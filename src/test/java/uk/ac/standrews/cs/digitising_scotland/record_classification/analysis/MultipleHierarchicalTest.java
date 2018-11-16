@@ -22,7 +22,7 @@ import uk.ac.standrews.cs.digitising_scotland.record_classification.model.Classi
 import uk.ac.standrews.cs.utilities.FileManipulation;
 import uk.ac.standrews.cs.utilities.dataset.DataSet;
 
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -43,13 +43,13 @@ public class MultipleHierarchicalTest {
     @Before
     public void setUp() throws Exception {
 
-        try (InputStreamReader reader = FileManipulation.getInputStreamReaderForResource(MultipleHierarchicalTest.class, CLASSIFIED_FILE_NAME)) {
+        try (final InputStream stream = FileManipulation.getInputStreamForResource(MultipleHierarchicalTest.class, CLASSIFIED_FILE_NAME)) {
 
-            classified_records_csv = new DataSet(reader, ',');
+            classified_records_csv = new DataSet(stream, ',');
         }
-        try (InputStreamReader reader = FileManipulation.getInputStreamReaderForResource(MultipleHierarchicalTest.class, GOLD_STANDARD_FILE_NAME)) {
+        try (final InputStream stream = FileManipulation.getInputStreamForResource(MultipleHierarchicalTest.class, GOLD_STANDARD_FILE_NAME)) {
 
-            gold_standard_records_csv = new DataSet(reader, ',');
+            gold_standard_records_csv = new DataSet(stream, ',');
         }
     }
 
@@ -58,7 +58,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(5, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
+        final Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
 
         assertCount(0, "A12.6", classification_counts);
         assertCount(0, "A12.7", classification_counts);
@@ -82,7 +82,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(5, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
+        final Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
 
         assertCount(0, "A12.6", true_positive_counts);
         assertCount(0, "A12.7", true_positive_counts);
@@ -106,7 +106,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(5, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
+        final Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
 
         assertCount(6, "A12.6", true_negative_counts);
         assertCount(6, "A12.7", true_negative_counts);
@@ -130,7 +130,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(5, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
+        final Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
 
         assertCount(0, "A12.6", false_positive_counts);
         assertCount(0, "A12.7", false_positive_counts);
@@ -155,7 +155,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(5, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
+        final Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
 
         assertCount(1, "A12.6", false_negative_counts);
         assertCount(1, "A12.7", false_negative_counts);
@@ -187,7 +187,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(3, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
+        final Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
 
         assertCount(0, "A12", classification_counts);
         assertCount(1, "A34", classification_counts);
@@ -210,7 +210,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(3, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
+        final Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
 
         assertCount(0, "A12", true_positive_counts);
         assertCount(1, "A34", true_positive_counts);
@@ -233,7 +233,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(3, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
+        final Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
 
         assertCount(5, "A12", true_negative_counts);
         assertCount(6, "A34", true_negative_counts);
@@ -256,7 +256,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(3, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
+        final Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
 
         assertCount(0, "A12", false_positive_counts);
         assertCount(0, "A34", false_positive_counts);
@@ -280,7 +280,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(3, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
+        final Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
 
         assertCount(2, "A12", false_negative_counts);
         assertCount(0, "A34", false_negative_counts);
@@ -311,7 +311,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(2, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
+        final Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
 
         assertCount(1, "A1", classification_counts);
         assertCount(1, "A3", classification_counts);
@@ -334,7 +334,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(2, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
+        final Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
 
         assertCount(1, "A1", true_positive_counts);
         assertCount(1, "A3", true_positive_counts);
@@ -357,7 +357,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(2, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
+        final Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
 
         assertCount(5, "A1", true_negative_counts);
         assertCount(6, "A3", true_negative_counts);
@@ -380,7 +380,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(2, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
+        final Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
 
         assertCount(0, "A1", false_positive_counts);
         assertCount(0, "A3", false_positive_counts);
@@ -404,7 +404,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(2, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
+        final Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
 
         assertCount(1, "A1", false_negative_counts);
         assertCount(0, "A3", false_negative_counts);
@@ -435,7 +435,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(1, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
+        final Map<String, AtomicInteger> classification_counts = matrix.getClassificationCounts();
 
         assertCount(2, "A", classification_counts);
         assertCount(0, "B", classification_counts);
@@ -452,7 +452,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(1, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
+        final Map<String, AtomicInteger> true_positive_counts = matrix.getTruePositiveCounts();
 
         assertCount(2, "A", true_positive_counts);
         assertCount(0, "B", true_positive_counts);
@@ -469,7 +469,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(1, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
+        final Map<String, AtomicInteger> true_negative_counts = matrix.getTrueNegativeCounts();
 
         assertCount(4, "A", true_negative_counts);
         assertCount(6, "B", true_negative_counts);
@@ -486,7 +486,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(1, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
+        final Map<String, AtomicInteger> false_positive_counts = matrix.getFalsePositiveCounts();
 
         assertCount(0, "A", false_positive_counts);
         assertCount(0, "B", false_positive_counts);
@@ -504,7 +504,7 @@ public class MultipleHierarchicalTest {
 
         matrix = new MatchingPrefixConfusionMatrix(1, classified_records_csv, gold_standard_records_csv);
 
-        Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
+        final Map<String, AtomicInteger> false_negative_counts = matrix.getFalseNegativeCounts();
 
         assertCount(1, "A", false_negative_counts);
         assertCount(1, "B", false_negative_counts);
@@ -524,7 +524,7 @@ public class MultipleHierarchicalTest {
         assertEquals(3.0 / 7.0, matrix.proportionOfRecordsWithCorrectNumberOfClassifications(), DELTA);
     }
 
-    private void assertCount(int count, String code, Map<String, AtomicInteger> counts) {
+    private void assertCount(final int count, final String code, final Map<String, AtomicInteger> counts) {
 
         if (counts.containsKey(code)) {
             assertEquals(count, counts.get(code).get());
